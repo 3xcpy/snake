@@ -128,21 +128,41 @@ void poll_events()
 	{
 		if (IsKeyPressed(KEY_UP))
 		{
+			for (auto t : tail)
+			{
+				if (t.x == head.x && t.y == head.y - 1)
+					break;
+			}
 			head.dir = UP;
 			head.lastDir = UP;
 		}
 		if (IsKeyPressed(KEY_DOWN))
 		{
+			for (auto t : tail)
+			{
+				if (t.x == head.x && t.y == head.y + 1)
+					break;
+			}
 			head.dir = DOWN;
 			head.lastDir = DOWN;
 		}
 		if (IsKeyPressed(KEY_LEFT))
 		{
+			for (auto t : tail)
+			{
+				if (t.x == head.x - 1 && t.y == head.y)
+					break;
+			}
 			head.dir = LEFT;
 			head.lastDir = LEFT;
 		}
 		if (IsKeyPressed(KEY_RIGHT))
 		{
+			for (auto t : tail)
+			{
+				if (t.x == head.x + 1 && t.y == head.y)
+					break;
+			}
 			head.dir = RIGHT;
 			head.lastDir = RIGHT;
 		}
@@ -192,35 +212,15 @@ void update_player()
 	case NONE:
 		break;
 	case UP:
-		for (auto t : tail)
-		{
-			if (t.x == head.x && t.y == head.y - 1)
-				break;
-		}
 		head.y -= 1;
 		break;
 	case DOWN:
-		for (auto t : tail)
-		{
-			if (t.x == head.x && t.y == head.y + 1)
-				break;
-		}
 		head.y += 1;
 		break;
 	case LEFT:
-		for (auto t : tail)
-		{
-			if (t.x == head.x - 1 && t.y == head.y)
-				break;
-		}
 		head.x -= 1;
 		break;
 	case RIGHT:
-		for (auto t : tail)
-		{
-			if (t.x == head.x + 1 && t.y == head.y)
-				break;
-		}
 		head.x += 1;
 		break;
 	}
