@@ -126,45 +126,21 @@ void poll_events()
 {
 	if (tail.size() != 0)
 	{
-		if (IsKeyPressed(KEY_UP))
+		if (IsKeyPressed(KEY_UP) && head.lastDir != DOWN)
 		{
-			for (auto t : tail)
-			{
-				if (t.x == head.x && t.y == head.y - 1)
-					break;
-			}
 			head.dir = UP;
-			head.lastDir = UP;
 		}
-		if (IsKeyPressed(KEY_DOWN))
+		if (IsKeyPressed(KEY_DOWN) && head.lastDir != UP)
 		{
-			for (auto t : tail)
-			{
-				if (t.x == head.x && t.y == head.y + 1)
-					break;
-			}
 			head.dir = DOWN;
-			head.lastDir = DOWN;
 		}
-		if (IsKeyPressed(KEY_LEFT))
+		if (IsKeyPressed(KEY_LEFT) && head.lastDir != RIGHT)
 		{
-			for (auto t : tail)
-			{
-				if (t.x == head.x - 1 && t.y == head.y)
-					break;
-			}
 			head.dir = LEFT;
-			head.lastDir = LEFT;
 		}
-		if (IsKeyPressed(KEY_RIGHT))
+		if (IsKeyPressed(KEY_RIGHT) && head.lastDir != LEFT)
 		{
-			for (auto t : tail)
-			{
-				if (t.x == head.x + 1 && t.y == head.y)
-					break;
-			}
 			head.dir = RIGHT;
-			head.lastDir = RIGHT;
 		}
 	}
 	if (tail.size() == 0)
@@ -213,15 +189,19 @@ void update_player()
 		break;
 	case UP:
 		head.y -= 1;
+		head.lastDir = UP;
 		break;
 	case DOWN:
 		head.y += 1;
+		head.lastDir = DOWN;
 		break;
 	case LEFT:
 		head.x -= 1;
+		head.lastDir = LEFT;
 		break;
 	case RIGHT:
 		head.x += 1;
+		head.lastDir = RIGHT;
 		break;
 	}
 
