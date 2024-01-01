@@ -1,3 +1,5 @@
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
 #include<raylib.h>
 
 #include<vector>
@@ -40,7 +42,8 @@ enum
 {
 	MENU,
 	GAME,
-	GAMEOVER
+	GAMEOVER,
+	WIN
 }state;
 
 struct
@@ -64,6 +67,15 @@ struct
 	std::string gmPrompt = "Press any key to retry";
 	Color gmPromptColor = RAYWHITE;
 	int gmPromptPadding = 20;
+
+	int winSize = 100;
+	std::string win = "YOU WON!";
+	Color winColor = WHITE;
+
+	int winPromptSize = 40;
+	std::string winPrompt = "Press any key to play again";
+	Color winPromptColor = RAYWHITE;
+	int winPromptPadding = 20;
 
 	Color bg = BLACK;
 } menu;
@@ -241,6 +253,11 @@ void update_player()
 		state = GAMEOVER;
 	if (head.y >= levelHeight)
 		state = GAMEOVER;
+
+	if (tailLength == levelWidth * levelHeight)
+	{
+		state = WIN;
+	}
 }
 
 void draw()
@@ -308,7 +325,20 @@ void draw_game_over()
 	DrawText(menu.score.c_str(), GetScreenWidth() / 2 - scoreTextWidth / 2, GetScreenHeight() / 2 - menu.scoreSize / 2 + menu.yOffset, menu.scoreSize, menu.scoreColor);
 
 	int gmPromptWidth = MeasureText(menu.gmPrompt.c_str(), menu.gmPromptSize);
-	DrawText(menu.gmPrompt.c_str(), GetScreenWidth() / 2 - gmPromptWidth / 2, GetScreenHeight() / 2 + menu.scoreSize / 2 + menu.gmPromptPadding + menu.yOffset, menu.gmPromptSize, menu.gmPromptColor);
+	DrawText(menu.gmPrompt.c_str(), GetScreenWidth() / 2 - gmPromptWidth / 2, GetScreenHeight() / 2 + menu.scoreSize / 2 + menu.winPromptPadding + menu.yOffset, menu.winPromptSize, menu.winPromptColor);
+	EndDrawing();
+}
+
+void draw_win()
+{
+	BeginDrawing();
+	ClearBackground(menu.bg);
+
+	int winTextWidth = MeasureText(menu.win.c_str(), menu.winSize);
+	DrawText(menu.win.c_str(), GetScreenWidth() / 2 - winTextWidth / 2, GetScreenHeight() / 2 - menu.winSize / 2 + menu.yOffset, menu.winSize, menu.winColor);
+
+	int winPromptWidth = MeasureText(menu.gmPrompt.c_str(), menu.gmPromptSize);
+	DrawText(menu.winPrompt.c_str(), GetScreenWidth() / 2 - winPromptWidth / 2, GetScreenHeight() / 2 + menu.winSize / 2 + menu.gmPromptPadding + menu.yOffset, menu.gmPromptSize, menu.gmPromptColor);
 	EndDrawing();
 }
 
@@ -339,5 +369,11 @@ void update()
 	{
 		poll_menu_events();
 		draw_game_over();
+	}
+
+	if (state == WIN)
+	{
+		poll_menu_events();
+		draw_win();
 	}
 }
